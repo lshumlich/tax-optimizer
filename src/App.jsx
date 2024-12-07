@@ -4,10 +4,10 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useEffect,useCallback } from "react";
 import {
-  abTaxRate,
-  abTaxTable,
-  fedTaxRate,
-  fedTaxTable,
+  // abTaxRate,
+  // abTaxTable,
+  // fedTaxRate,
+  // fedTaxTable,
   calcTax,
   calcTaxForTwo,
 } from "./tax";
@@ -15,19 +15,18 @@ import {
 import { dollarFormatter, toNumber } from "./utils";
 
 function App() {
-  console.log("App has just run");
+  // console.log("App has just run");
 
-  const [count, setCount] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
   const [bfo, setBfo] = useState({
     fname: "",
-    year: 0,
-    income: 0,
+    year: 2024,
+    income: '100,000',
     withPartner: true,
   });
 
   useEffect(() => {
-    console.log("App useEffect This should only run once");
+    // console.log("App useEffect This should only run once");
     setBfo({
       fname: "Larry",
       year: 2024,
@@ -37,57 +36,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("Tab Index changed", tabIndex);
+    // console.log("Tab Index changed", tabIndex);
   }, [tabIndex]);
-
-  // function runTaxCalc() {
-  //   console.log(
-  //     "--Should run the tax calc with",
-  //     bfo.year,
-  //     bfo.income,
-  //     bfo.withPartner
-  //   );
-  //   if (bfo.withPartner) {
-  //     console.log(calcTaxForTwo(bfo.year, toNumber(bfo.income)));
-  //   } else {
-  //     console.log(calcTax(bfo.year, toNumber(bfo.income)));
-  //   }
-  // }
 
   return (
     <div>
       <h1 className="underline">Retirement Income Optimizer</h1>
-      {/* <Counter />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          v2 count is {count}
-        </button>
-      </div>
-      <label>
-        Text input: <input name="myInput" />
-      </label>
-      <hr />
-      <label>
-        Checkbox: <input type="checkbox" name="myCheckbox" />
-      </label>
-      <hr />
-      <p>
-        Radio buttons:
-        <label>
-          <input type="radio" name="myRadio" value="option1" />
-          Option 1
-        </label>
-        <label>
-          <input type="radio" name="myRadio" value="option2" />
-          Option 2
-        </label>
-        <label>
-          <input type="radio" name="myRadio" value="option3" />
-          Option 3
-        </label>
-      </p> */}
-
-      {/* <TaxInput o={bfo} run={runTaxCalc} /> */}
       <Tabs
         className="mt-8"
         selectedIndex={tabIndex}
@@ -127,34 +81,18 @@ function App() {
 export default App;
 
 function MiniComp(params) {
-  // console.log("MiniComp running:", params);
   return <h3>MiniComp {params.tab}</h3>;
-}
-
-function Counter() {
-  const [count, setCount] = useState(0);
-  return (
-    <div className="card">
-      <button onClick={() => setCount((count) => count + 1)}>
-        New Component Count is {count}
-      </button>
-    </div>
-  );
 }
 
 // ----------- TaxTab
 
 function TaxTab(params) {
   const [result, setResult] = useState({});
-  const [input, setInput] = useState({});
+  const input = params.o;
   
   const runTaxCalc = useCallback(() => {
-    console.log(
-      "--Should run the tax calc with",
-      input.year,
-      input.income,
-      input.withPartner
-    );
+    // console.log('--runTaxCalc',input.year,input.income);
+    
     try {
       if (input.withPartner) {
         setResult(calcTaxForTwo(input.year, toNumber(input.income)));
@@ -168,13 +106,9 @@ function TaxTab(params) {
   },[input]);
 
   useEffect(() => {
-    setInput(params.o);
-  //   runTaxCalc();
-  //   // console.log("useEffect in TaxTab (should only run once)");
-  }, [params.o]);
-
-
-  // console.log('about to render TaxTab---',result);
+    runTaxCalc();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -237,7 +171,6 @@ function TaxDisplay(params) {
 // ----------- TaxInput
 
 function TaxInput(params) {
-  // console.log("TaxInput has just run");
 
   const [input, setInput] = useState({
     year: 0,
@@ -246,19 +179,11 @@ function TaxInput(params) {
   });
 
   useEffect(() => {
+    // console.log('TaxInput - useEffect',params.o);
+    
     setInput(params.o);
   }, [params]);
   const [count, setCount] = useState(0);
-
-  // function didYouPressEnter(e) {
-  //   if (e.key === "Enter") {
-  //     console.log("We are going to run some shit....");
-  //     // params.run();
-  //   }
-  //   // console.log('didYouPressEnter',e.key);
-
-  //   // params.run()
-  // }
 
   function setDollar(e) {
     input[e.target.name] = dollarFormatter(e.target.value);

@@ -1,10 +1,10 @@
 
 export function toNumber(s) {
+  if(!s) return 0;
   return(Number(s.replace(/[$,\s]/g, "")));
 }
 
 export function dollarFormatter(s) {
-
   if(!s) return '';
 
   const n = (typeof s === 'number')

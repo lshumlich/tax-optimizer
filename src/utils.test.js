@@ -14,4 +14,5 @@ test('to number', () => {
     expect(toNumber('1,2,3')).toBe(123);
     expect(toNumber('1,2,3.12')).toBe(123.12);
     expect(toNumber('abc1,2,3.12')).toBe(NaN);
+    expect(toNumber(null)).toBe('');
 }) 
