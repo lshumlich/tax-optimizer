@@ -1,7 +1,4 @@
 
-console.log('***** tax.js ****** has just run... Should only run once.');
-
-
 const STARTING_YEAR = 2024;
 const PERIODS = 36;
 const INFLATION = .02
@@ -55,24 +52,32 @@ function calcTaxForBracket(income, brackets, rates) {
 }
 
 export function calcTax(year, income) {
+    // console.log('calcTax', year, income);
+
+    const result = { income, year };
     const fTaxBracket = fedTaxTable[year];
     let fTax = calcTaxForBracket(income, fTaxBracket, fedTaxRate);
     fTax -= (15000 * .15);
     if (fTax < 0) fTax = 0;
+    result.fTax = Math.round(fTax);
     const pTaxBracket = abTaxTable[year];
     let pTax = calcTaxForBracket(income, pTaxBracket, abTaxRate);
     pTax -= (15000 * .15);
     if (pTax < 0) pTax = 0;
-    return fTax + pTax;
+    result.pTax = Math.round(pTax);
+    result.totalTax = Math.round(fTax + pTax);
+    result.afterTaxIncome = result.income - result.totalTax;
+    return result;
 }
 
 export function calcTaxForTwo(year, income) {
     const halfIncome = income / 2;
-    const tax = calcTax(year, halfIncome);
-    return tax * 2;
+    const tf1 = calcTax(year, halfIncome);
+    const result = { year, income, fTax: tf1.fTax * 2, pTax: tf1.pTax * 2, totalTax: tf1.totalTax * 2, afterTaxIncome: tf1.afterTaxIncome * 2 }
+    // console.log('calcTax', year, income, result);
+
+    return result;
 }
-
-
 
 export let fedTaxTable = calcFutureTaxRates(STARTING_YEAR, PERIODS, INFLATION, OVERRIDE_INFLATION, FED_TAX_TABLE);
 export let abTaxTable = calcFutureTaxRates(STARTING_YEAR, PERIODS, INFLATION, OVERRIDE_INFLATION, AB_TAX_TABLE);

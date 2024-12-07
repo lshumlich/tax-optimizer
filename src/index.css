@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.dash {
+  border-style: dashed;
+  border-width:  2px;
+  border-radius: 8px;
+}
+
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -29,13 +35,18 @@
   body {
     margin: 0;
     display: flex;
-    place-items: center;
+    /* place-items: center; */
     min-width: 320px;
     min-height: 100vh;
   }
   
   h1 {
     font-size: 3.2em;
+    line-height: 1.1;
+  }
+  
+  h2 {
+    font-size: 1.7em;
     line-height: 1.1;
   }
   

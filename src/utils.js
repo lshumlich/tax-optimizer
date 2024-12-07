@@ -1,25 +1,18 @@
 
-
-export function dollarFormatter(s) {
-    return Number(s.replace(/[$,\s]/g, "")).toLocaleString();
+export function toNumber(s) {
+  return(Number(s.replace(/[$,\s]/g, "")));
 }
 
+export function dollarFormatter(s) {
 
-console.log("Hello world from utils.js");
-// console.log("Hello world from utils.js", require.main);
-// console.log("Hello world from utils.js", module);
+  if(!s) return '';
 
-// if (require.main === module) {
-//     runTests();
-// }
-
-if (typeof module !== 'undefined' && !module.parent) {
-    console.log('This is the main');
-    // this is the main module
-  } else {
-    console.log('This is not the main');
+  const n = (typeof s === 'number')
+    ? s :
+    toNumber(s);
+  if (isNaN(n)) {
+    return s;
   }
-
-function runTests() {
-    console.log('******** Running runTests');
+  return n.toLocaleString();
+  // return Number(s.replace(/[$,\s]/g, "")).toLocaleString();
 }
