@@ -1,6 +1,7 @@
 
 export function toNumber(s) {
   if(!s) return 0;
+  if(typeof s === 'number') return s;
   return(Number(s.replace(/[$,\s]/g, "")));
 }
 
