@@ -127,12 +127,12 @@ export function calcTax(input) {
 export function calcTaxForTwo(input) {
     const tf1 = calcTax({ 
         year: input.year,
-        employmentIncome: input.employmentIncome / 2,
-        selfEmploymentIncome: input.selfEmploymentIncome / 2,
-        otherIncome: input.otherIncome / 2,
-        eligibleDividends: input.eligibleDividends / 2,
-        ineligibleDividends: input.ineligibleDividends / 2,
-        capitalGains: input.capitalGains / 2,
+        employmentIncome: input.employmentIncome / 2 | 0,
+        selfEmploymentIncome: input.selfEmploymentIncome / 2 | 0,
+        otherIncome: input.otherIncome / 2 | 0,
+        eligibleDividends: input.eligibleDividends / 2 | 0,
+        ineligibleDividends: input.ineligibleDividends / 2 | 0,
+        capitalGains: input.capitalGains / 2 | 0,
     });
         
     return { 

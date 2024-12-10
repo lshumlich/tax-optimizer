@@ -13,12 +13,24 @@ import {
 } from "./tax";
 
 import { dollarFormatter, toNumber } from "./utils";
+import { DollarInput } from "./components/DollarInput";
 
 function App() {
   // console.log("App has just run");
 
   const [tabIndex, setTabIndex] = useState(0);
-  const [bfo, setBfo] = useState({
+  // const [bfo, setBfo] = useState({
+  //   fname: "",
+  //   year: 2024,
+  //   employmentIncome: 0,
+  //   selfEmploymentIncome: 0,
+  //   capitalGains: 0,
+  //   eligibleDividends: 0,
+  //   ineligibleDividends: 0,
+  //   otherIncome: 0,
+  //   withPartner: true,
+  // });
+  const bfo = {
     fname: "",
     year: 2024,
     employmentIncome: 0,
@@ -28,7 +40,7 @@ function App() {
     ineligibleDividends: 0,
     otherIncome: 0,
     withPartner: true,
-  });
+  };
 
   // useEffect(() => {
   //   // console.log("App useEffect This should only run once");
@@ -54,7 +66,7 @@ function App() {
       >
         <TabList>
           <Tab>Tax Calculations</Tab>
-          <Tab>Title 2</Tab>
+          <Tab>Investments</Tab>
           <Tab>Title 3</Tab>
           <Tab>Title 4</Tab>
           <Tab>Title 5</Tab>
@@ -64,7 +76,7 @@ function App() {
           <TaxTab o={bfo} />
         </TabPanel>
         <TabPanel>
-          <MiniComp tab="2"></MiniComp>
+          <Investments />
         </TabPanel>
         <TabPanel>
           <MiniComp tab="3"></MiniComp>
@@ -84,6 +96,31 @@ function App() {
 }
 
 export default App;
+
+function Investments(params) {
+  const [tabIndex, setTabIndex] = useState(0);
+  return (
+    <div>
+      {/* <h1>Investments</h1> */}
+      <Tabs
+        className="mt-8"
+        selectedIndex={tabIndex}
+        onSelect={(index) => setTabIndex(index)}
+      >
+        <TabList>
+          <Tab>Input</Tab>
+          <Tab>Results</Tab>
+        </TabList>
+        <TabPanel>
+          <MiniComp tab="1"></MiniComp>
+        </TabPanel>
+        <TabPanel>
+          <MiniComp tab="2"></MiniComp>
+        </TabPanel>
+      </Tabs>
+    </div>
+  );
+}
 
 function MiniComp(params) {
   return <h3>MiniComp {params.tab}</h3>;
@@ -252,90 +289,47 @@ function TaxInput(params) {
         </div>
       </div>
 
-      <div className="w-60">
-        <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-          {"Employment Income"}
-        </label>
-        <input
-          value={input.employmentIncome}
-          type="dollar"
-          name="employmentIncome"
-          pattern="^$|^[+\-]?\$?(\d+|(\d+[,\s])*?\d+)(\.\d*[1-9]+\d*)?$"
-          className="peer block w-32 rounded-full border-2 border-gray-300 bg-transparent px-4 py-2 text-right text-sm font-normal tabular-nums text-gray-900 placeholder:text-gray-400 invalid:border-red-600 focus:bg-white focus:outline-none focus:outline-0 focus:[&:not(:invalid)]:border-blue-300"
-          onChange={setDollar}
-        />
-      </div>
+      <DollarInput
+        name="employmentIncome"
+        heading="Employment Income"
+        value={input.employmentIncome}
+        onChange={setDollar}
+      />
 
-      <div className="w-60">
-        <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-          {"Self employment Income"}
-        </label>
-        <input
-          value={input.selfEmploymentIncome}
-          type="dollar"
-          name="selfEmploymentIncome"
-          pattern="^$|^[+\-]?\$?(\d+|(\d+[,\s])*?\d+)(\.\d*[1-9]+\d*)?$"
-          className="peer block w-32 rounded-full border-2 border-gray-300 bg-transparent px-4 py-2 text-right text-sm font-normal tabular-nums text-gray-900 placeholder:text-gray-400 invalid:border-red-600 focus:bg-white focus:outline-none focus:outline-0 focus:[&:not(:invalid)]:border-blue-300"
-          onChange={setDollar}
-        />
-      </div>
-      capitalGains: 0,
+      <DollarInput
+        name="selfEmploymentIncome"
+        heading="Self Employment Income"
+        value={input.selfEmploymentIncome}
+        onChange={setDollar}
+      />
 
-      <div className="w-60">
-        <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-          {"Capital Gains"}
-        </label>
-        <input
-          value={input.capitalGains}
-          type="dollar"
-          name="capitalGains"
-          pattern="^$|^[+\-]?\$?(\d+|(\d+[,\s])*?\d+)(\.\d*[1-9]+\d*)?$"
-          className="peer block w-32 rounded-full border-2 border-gray-300 bg-transparent px-4 py-2 text-right text-sm font-normal tabular-nums text-gray-900 placeholder:text-gray-400 invalid:border-red-600 focus:bg-white focus:outline-none focus:outline-0 focus:[&:not(:invalid)]:border-blue-300"
-          onChange={setDollar}
-        />
-      </div>
+      <DollarInput
+        name="capitalGains"
+        heading="Capital Gains"
+        value={input.capitalGains}
+        onChange={setDollar}
+      />
 
-      <div className="w-60">
-        <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-          {"Eligible Dividends"}
-        </label>
-        <input
-          value={input.eligibleDividends}
-          type="dollar"
-          name="eligibleDividends"
-          pattern="^$|^[+\-]?\$?(\d+|(\d+[,\s])*?\d+)(\.\d*[1-9]+\d*)?$"
-          className="peer block w-32 rounded-full border-2 border-gray-300 bg-transparent px-4 py-2 text-right text-sm font-normal tabular-nums text-gray-900 placeholder:text-gray-400 invalid:border-red-600 focus:bg-white focus:outline-none focus:outline-0 focus:[&:not(:invalid)]:border-blue-300"
-          onChange={setDollar}
-        />
-      </div>
+      <DollarInput
+        name="eligibleDividends"
+        heading="Eligible Dividends"
+        value={input.eligibleDividends}
+        onChange={setDollar}
+      />
 
-      <div className="w-60">
-        <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-          {"Ineligible Dividends"}
-        </label>
-        <input
-          value={input.ineligibleDividends}
-          type="dollar"
-          name="ineligibleDividends"
-          pattern="^$|^[+\-]?\$?(\d+|(\d+[,\s])*?\d+)(\.\d*[1-9]+\d*)?$"
-          className="peer block w-32 rounded-full border-2 border-gray-300 bg-transparent px-4 py-2 text-right text-sm font-normal tabular-nums text-gray-900 placeholder:text-gray-400 invalid:border-red-600 focus:bg-white focus:outline-none focus:outline-0 focus:[&:not(:invalid)]:border-blue-300"
-          onChange={setDollar}
-        />
-      </div>
+      <DollarInput
+        name="ineligibleDividends"
+        heading="Ineligible Dividends"
+        value={input.ineligibleDividends}
+        onChange={setDollar}
+      />
 
-      <div className="w-60">
-        <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-          {"Other Income"}
-        </label>
-        <input
-          value={input.otherIncome}
-          type="dollar"
-          name="otherIncome"
-          pattern="^$|^[+\-]?\$?(\d+|(\d+[,\s])*?\d+)(\.\d*[1-9]+\d*)?$"
-          className="peer block w-32 rounded-full border-2 border-gray-300 bg-transparent px-4 py-2 text-right text-sm font-normal tabular-nums text-gray-900 placeholder:text-gray-400 invalid:border-red-600 focus:bg-white focus:outline-none focus:outline-0 focus:[&:not(:invalid)]:border-blue-300"
-          onChange={setDollar}
-        />
-      </div>
+      <DollarInput
+        name="otherIncome"
+        heading="Other Income"
+        value={input.otherIncome}
+        onChange={setDollar}
+      />
     </div>
   );
 }
