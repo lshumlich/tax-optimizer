@@ -8,6 +8,7 @@ import { MiniComp } from "./components/MiniComp";
 import { InvestmentTab } from "./investment/InvestmentTab";
 import { TaxTab } from "./tax/TaxTab";
 import { FontDisplay } from "./components/FontTab";
+import { ResultTab } from "./result/Result";
 
 function App() {
   // console.log("App has just run");
@@ -61,7 +62,7 @@ function App() {
         <TabList>
           <Tab>Tax Calculations</Tab>
           <Tab>Investments</Tab>
-          <Tab>Title 3</Tab>
+          <Tab>Results</Tab>
           <Tab>Title 4</Tab>
           <Tab>Title 5</Tab>
           <Tab>Font Examples</Tab>
@@ -73,7 +74,7 @@ function App() {
           <InvestmentTab />
         </TabPanel>
         <TabPanel>
-          <MiniComp tab="3"></MiniComp>
+          <ResultTab/>
         </TabPanel>
         <TabPanel>
           <MiniComp tab="4"></MiniComp>
