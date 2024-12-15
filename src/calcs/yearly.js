@@ -19,14 +19,10 @@ export class Scenario {
     // Create a scenario based on the params.
     // 
     constructor(params) {
+        const toAge = 95;
         Object.assign(this, params);
 
-        if (!this.year) this.year = 2030;
-        if (!this.iterations) this.iterations = 30;
-        if (!this.inflation) this.inflation = .022;
-        if (!this.interest) this.interest = .052;
-        if (!this.age) this.age = 65;
-        if (!this.partnerAge) this.partnerAge = 64;
+        this.iterations = (toAge - this.age) + 1;
 
         this.yearArray = [...Array(this.iterations)].map((_, i) => {
             return new Yearly({
@@ -42,11 +38,17 @@ export class Scenario {
         year0.totalRegistered = toNumber(this.totalRegistered) || 0;
         year0.totalUnregistered = toNumber(this.totalUnregistered) || 0
         year0.totalTFSA = toNumber(this.totalTFSA) || 0;
+        year0.employment = toNumber(this.employment) || 0;
+        year0.selfEmployment = toNumber(this.selfEmployment) || 0;
+        year0.otherIncome = toNumber(this.otherIncome) || 0;
+        year0.yearlyExpenses = toNumber(this.yearlyExpenses) || 0;
 
         this.yearArray.forEach((y, i, n) => {
             y.registeredGain = Math.round(y.totalRegistered * y.interest);
             y.unregisteredGain = Math.round(y.totalUnregistered * y.interest);
             y.TFSAGain = Math.round(y.totalTFSA * y.interest);
+            y.investments = y.totalRegistered + y.totalUnregistered + y.totalTFSA;
+            
             const nextYear = n[i + 1];
             if (nextYear) {
                 nextYear.totalRegistered = y.totalRegistered + y.registeredGain;

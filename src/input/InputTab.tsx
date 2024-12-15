@@ -1,39 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
-import { MiniComp } from "../components/MiniComp";
+// import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
+// import { MiniComp } from "../components/MiniComp";
 import { useEffect } from "react";
 import { dollarFormatter } from "../utils";
 import { DollarInput } from "../components/DollarInput";
+import { Generator } from "../calcs/Generator";
 
-export function InvestmentTab(params) {
-  const [tabIndex, setTabIndex] = useState(0);
-  return (
-    <div>
-      {/* <h1>Investments</h1> */}
-      <Tabs
-        className="mt-8"
-        selectedIndex={tabIndex}
-        onSelect={(index) => setTabIndex(index)}
-      >
-        <TabList>
-          <Tab>Input</Tab>
-          <Tab>Results</Tab>
-        </TabList>
-        <TabPanel>
-          <InvestmentInput />
-        </TabPanel>
-        <TabPanel>
-          <MiniComp tab="2"></MiniComp>
-        </TabPanel>
-      </Tabs>
-    </div>
-  );
-}
+// ----------- Input
 
-// ----------- InvestmentInput
-
-function InvestmentInput(params) {
+export function InputTabOldDeleteMe(params) {
 
   let inputData = {
     totalRegistered: 0,
@@ -83,6 +59,7 @@ function InvestmentInput(params) {
 
   return (
     <div className="flex flex-wrap mt-5 bg-white w-80 drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] rounded-2xl m-4 p-4">
+      <span className="font-bold">Investments</span>
       <DollarInput
         name="totalRegistered"
         heading="Total Registered"
@@ -105,4 +82,28 @@ function InvestmentInput(params) {
       />
     </div>
   );
+}
+
+export function InputTab(params) {
+
+  const display = [
+    'Investments',
+    {name:"totalRegistered"},
+    {name:"totalUnregistered"},
+    {name:"totalTFSA"},
+    'Annual Income',
+    {name:"employment"},
+    {name:"selfEmployment"},
+    {name:"otherIncome"},
+    'Annual Expenses',
+    {name:"yearlyExpenses"},
+  ]
+
+
+  return (
+    // <div className="dash flex flex-wrap w-auto bg-white drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] rounded-2xl m-4 p-4" >
+    <div className="dash flex flex-wrap w-9/12 bg-white drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] rounded-2xl m-4 p-4" >
+      <Generator display={display}/>
+    </div>
+  )
 }
