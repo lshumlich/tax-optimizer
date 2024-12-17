@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DollarInput } from "../components/DollarInput";
-import { INPUTS } from "./attributes";
+import { ATTRIBUTES } from "./attributes";
 import { dollarFormatter } from "../utils";
 
 export function Generator(params) {
@@ -10,7 +10,7 @@ export function Generator(params) {
   display.forEach(d => {
       if (typeof d !== 'string') {
           const { name } = d;
-          const attr = INPUTS[name];
+          const attr = ATTRIBUTES[name];
           values[name] = dollarFormatter(localStorage.getItem(name) || attr.default);
       }
   })
@@ -46,7 +46,10 @@ export function Generator(params) {
       );
     } else {
       const { name } = d;
-      const { title, type } = INPUTS[name];
+      if(!ATTRIBUTES[name]) {
+        throw(new Error(`Logic error, attribute '${name}' not setup.`));
+      }
+      const { title, type } = ATTRIBUTES[name];
       if (type === "dollar") {
         return (
           <DollarInput

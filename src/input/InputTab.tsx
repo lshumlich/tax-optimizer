@@ -96,7 +96,7 @@ export function InputTab(params) {
     {name:"selfEmployment"},
     {name:"otherIncome"},
     'Annual Expenses',
-    {name:"yearlyExpenses"},
+    {name:"annualExpenses"},
   ]
 
 

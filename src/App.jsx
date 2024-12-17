@@ -6,8 +6,9 @@ import "react-tabs/style/react-tabs.css";
 import { MiniComp } from "./components/MiniComp";
 import { TaxTab } from "./tax/TaxTab";
 import { FontDisplay } from "./components/FontTab";
-import { ResultTab } from "./result/Result";
+// import { ResultTab } from "./result/Result";
 import { InputTab } from "./input/InputTab";
+import { ResultNewTab } from "./result/ResultNew";
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -35,7 +36,7 @@ function App() {
           <Tab>Input</Tab>
           <Tab>Results</Tab>
           <Tab>Tax Calculations</Tab>
-          <Tab>Title 4</Tab>
+          <Tab>Plan</Tab>
           <Tab>Title 5</Tab>
           <Tab>Font Examples</Tab>
         </TabList>
@@ -43,13 +44,13 @@ function App() {
           <InputTab />
         </TabPanel>
         <TabPanel className="dash">
-          <ResultTab />
+          {/* <ResultTab /> */}
         </TabPanel>
         <TabPanel>
           <TaxTab o={bfo} />
         </TabPanel>
         <TabPanel className="dash">
-          <MiniComp tab="4"></MiniComp>
+          <ResultNewTab/>
         </TabPanel>
         <TabPanel>
           <MiniComp tab="5"></MiniComp>

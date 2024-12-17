@@ -1,3 +1,6 @@
+
+// DELETE ME I THINK
+
 import React from "react";
 import "handsontable/dist/handsontable.full.min.css";
 
@@ -11,16 +14,6 @@ import { useState } from "react";
 registerAllModules();
 
 export function ResultTab() {
-  const [view, setView] = useState(0);
-
-  // Grab all the input values
-  const params = {};
-  Object.keys(INPUTS).forEach((k) => {
-    params[k] = localStorage.getItem(k) || INPUTS[k].default;
-  });
-
-  const scenario = new Scenario(params);
-
   const display = {
     year: { title: "Year", width: 50, type: null },
     age: { title: "Age", width: 30, type: null },
@@ -52,30 +45,36 @@ export function ResultTab() {
   let data;
   let columnWidths;
 
-  if (view === 0) {
-    lookAt([
-      "year",
-      "age",
-      "partnerAge",
-      "investments",
-      "totalRegistered",
-      "registeredGain",
-      "totalUnregistered",
-      "unregisteredGain",
-      "totalTFSA",
-      "TFSAGain",
-      "employment",
-      "selfEmployment",
-      "otherIncome",
-      "inflation",
-      "interest",
-      "yearlyExpenses",
-    ]);
-  } else if (view === 1) {
-    lookAt(["age", "totalRegistered", "registeredGain"]);
-  } else if (view === 2) {
-    lookAt(["year", "investments"]);
-  }
+  const GeneralView = [
+    "year",
+    "age",
+    "partnerAge",
+    "investments",
+    "totalRegistered",
+    "registeredGain",
+    "totalUnregistered",
+    "unregisteredGain",
+    "totalTFSA",
+    "TFSAGain",
+    "employment",
+    "selfEmployment",
+    "otherIncome",
+    "inflation",
+    "interest",
+    "yearlyExpenses",
+  ];
+  const ExpenseView = ["age", "totalRegistered", "registeredGain"];
+  const RevenueView = ["year", "investments"];
+
+  const [view, setView] = useState(GeneralView);
+
+  // Grab all the input values
+  const params = {};
+  Object.keys(INPUTS).forEach((k) => {
+    params[k] = localStorage.getItem(k) || INPUTS[k].default;
+  });
+
+  const scenario = new Scenario(params);
 
   function lookAt(values) {
     columnWidths = values.map((a) => display[a].width);
@@ -95,15 +94,25 @@ export function ResultTab() {
 
   // Sends an array of changes
   function afterChange(changes, source) {
-    console.log(changes, source);
+    console.log('--- changes',changes, 'source:',source);
+    if (changes) {
+      changes.forEach((e) => {
+        const [row, col, from, to] = e;
+        console.log(row, col, from, to);
+        console.log('---', data[row][0], view[col]);
+        
+      });
+    }
   }
+
+  lookAt(view);
 
   return (
     // <div>
     <div className="dash flex flex-wrap w-full bg-white drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] rounded-2xl p-4">
-      <button onClick={() => setView(1)}>View 1</button>
-      <button onClick={() => setView(2)}>View 2</button>
-      <button onClick={() => setView(0)}>{view}</button>
+      <button onClick={() => setView(GeneralView)}>General</button>
+      <button onClick={() => setView(ExpenseView)}>Expense</button>
+      <button onClick={() => setView(RevenueView)}>Revenue</button>
       <div className="dash w-full">
         <HotTable
           data={data}
