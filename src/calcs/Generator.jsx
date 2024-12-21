@@ -4,37 +4,38 @@ import { ATTRIBUTES } from "./attributes";
 import { dollarFormatter } from "../utils";
 
 export function Generator(params) {
-//   console.log("---Generator is running---");
+  //   console.log("---Generator is running---");
   const { display } = params;
   const values = {};
-  display.forEach(d => {
-      if (typeof d !== 'string') {
-          const { name } = d;
-          const attr = ATTRIBUTES[name];
-          values[name] = dollarFormatter(localStorage.getItem(name) || attr.default);
-      }
-  })
-//   console.log(values);
+  display.forEach((d) => {
+    if (typeof d !== "string") {
+      const { name } = d;
+      const attr = ATTRIBUTES[name];
+      values[name] = dollarFormatter(
+        localStorage.getItem(name) || attr.default
+      );
+    }
+  });
+  //   console.log(values);
 
   const [count, setCount] = useState(0);
   const [input, setInput] = useState(values);
 
-    useEffect(() => {
-        
-        setInput(values);
-
-
-    },[params]);
-  
+  useEffect(() => {
+    setInput(values);
+  }, [params]);
 
   function setDollar(e) {
+    // console.log(e.target.pattern);
     input[e.target.name] = dollarFormatter(e.target.value);
-    localStorage.setItem(e.target.name, e.target.value);
+    if (e.target.value.match(e.target.pattern)) {
+      localStorage.setItem(e.target.name, e.target.value);
+    }
     setCount(count + 1);
     // params.run();
   }
 
-//   const input = {};
+  //   const input = {};
   const output = display.map((d) => {
     if (typeof d === "string") {
       //   return (<div key={d} className="flex flex-wrap font-bold w-80">{d}</div>);
@@ -46,8 +47,8 @@ export function Generator(params) {
       );
     } else {
       const { name } = d;
-      if(!ATTRIBUTES[name]) {
-        throw(new Error(`Logic error, attribute '${name}' not setup.`));
+      if (!ATTRIBUTES[name]) {
+        throw new Error(`Logic error, attribute '${name}' not setup.`);
       }
       const { title, type } = ATTRIBUTES[name];
       if (type === "dollar") {

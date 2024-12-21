@@ -11,7 +11,7 @@ export const ATTRIBUTES = {
   otherIncome: { title: "Other<br>Income", defaultVal: 0, type: 'dollar', editable: 'yearly', width: 70, },
   totalIncome: { title: "Total<br>Income", type: 'dollar', width: 70 },
 
-  annualExpenses: { title: "Annual<br>Expenses", defaultVal: 0, type: 'dollar', editable: 'yearly', width: 70, },
+  annualExpenses: { title: "Annual<br>Expenses", defaultVal: 0, type: 'dollar', editable: 'one', width: 70, },
   onetimeExpenses: { title: "Onetime<br>Expenses", defaultVal: 0, type: 'dollar', editable: 'yearly', width: 70, },
 
   registeredGain: { title: "Registered<br>Gain", width: 70, type: "dollar" },
@@ -27,11 +27,15 @@ export const ATTRIBUTES = {
   year: { title: "Year", defaultVal: 0, type: 'number', width: 50, },
   startYear: { title: "Start<br>Year", defaultVal: new Date().getFullYear(), type: 'number', editable: 'one' },
 
-  age: { title: "Your<br>Age", defaultVal: 64, editable: 'one', width: 30, },
-  partnerAge: { title: "Partners<br>Age", defaultVal: 64, editable: 'one', width: 30, },
+  age: { title: "Your<br>Age", defaultVal: 64, editable: 'one', type:'dollar', width: 30, },
+  partnerAge: { title: "Partners<br>Age", defaultVal: 64, editable: 'one',type:'dollar', width: 30, },
   taxes: { title: "Last Year<br>Taxes", editable: 'yearly', type: 'dollar',width: 70, },
   totalExpenses: { title: "Total<br>Expenses", type: 'dollar', width: 70 },
 
-  shortFall: { title: "Short<br>Fall", type: 'dollar', width: 70 },
+  decumulation: { title: "Decumulation", type: 'dollar', width: 70 },
   totalGain: { title: "Total<br>Gain", type: 'dollar', width: 70 },
+
+  unregisteredDeposit: { title: "Unregistered<br>Deposit", type: 'dollar', width: 70 },
+
+  shortFall: { title: "Short<br>Fall", type: 'dollar', width: 70 },
 };

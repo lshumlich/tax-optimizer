@@ -2,12 +2,13 @@ import { PropTypes } from "prop-types";
 
 export function DollarInput({ name, heading, value, onChange }) {
   // console.log(("DollarInput", name, heading, value));
+  const label = heading.replace('<br>', ' ');
 
   return (
     // <div className="dash w-60">
     <div className="dash w-44">
       <label className="mt-5 mb-2 flex cursor-pointer items-center text-sm font-medium text-gray-600">
-        {heading}
+        {label}
       </label>
       <input
         value={value}

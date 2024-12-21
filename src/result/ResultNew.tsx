@@ -6,6 +6,8 @@ import { HotTable } from "@handsontable/react";
 import { Scenario } from "../calcs/Scenario";
 import { ATTRIBUTES } from "../calcs/attributes";
 import { useState } from "react";
+import { Generator } from "../calcs/Generator";
+import { dollarFormatter, toNumber } from "../utils";
 
 registerAllModules();
 
@@ -23,6 +25,7 @@ export function ResultNewTab() {
     "year",
     "age",
     "partnerAge",
+    "shortFall",
     "investments",
     "totalGain",
     "totalRegistered",
@@ -31,6 +34,7 @@ export function ResultNewTab() {
     "totalUnregistered",
     "unregisteredGain",
     "unregisteredUse",
+    "unregisteredDeposit",
     "totalTFSA",
     "TFSAGain",
     "TFSAUse",
@@ -44,17 +48,17 @@ export function ResultNewTab() {
     "onetimeExpenses",
     "taxes",
     "totalExpenses",
-    "shortFall",
+    "decumulation",
   ];
   const ExpenseView = [
-    "year", 
+    "year",
     "annualExpenses",
     "onetimeExpenses",
     "taxes",
     "totalExpenses",
-];
+  ];
   const InvestmentView = [
-    "year", 
+    "year",
     "investments",
     "totalGain",
     "totalRegistered",
@@ -63,19 +67,20 @@ export function ResultNewTab() {
     "totalUnregistered",
     "unregisteredGain",
     "unregisteredUse",
+    "unregisteredDeposit",
     "totalTFSA",
     "TFSAGain",
     "TFSAUse",
-    "shortFall",
-];
-const SummaryView = [
-    "year", 
+    "decumulation",
+  ];
+  const SummaryView = [
+    "year",
     "investments",
     "totalGain",
     "totalIncome",
     "totalExpenses",
-    "shortFall",
-];
+    "decumulation",
+  ];
 
   const [view, setView] = useState(GeneralView);
   const [count, setCount] = useState(0);
@@ -83,16 +88,20 @@ const SummaryView = [
   console.time("ScenarioBuild");
 
   // Grab all the input values
-  const params = {};
-  Object.keys(ATTRIBUTES).forEach((k) => {
-    const { editable, defaultVal } = ATTRIBUTES[k];
-    if (editable === "one") {
-      params[k] = localStorage.getItem(k) || defaultVal;
-    } else if (editable === "yearly") {
-      params[k] = getYearlyValues(k);
-    }
-  });
+  function getParams() {
+    const params = {};
+    Object.keys(ATTRIBUTES).forEach((k) => {
+      const { editable, defaultVal } = ATTRIBUTES[k];
+      if (editable === "one") {
+        params[k] = localStorage.getItem(k) || defaultVal;
+      } else if (editable === "yearly") {
+        params[k] = getYearlyValues(k);
+      }
+    });
+    return params;
+  }
 
+  const params = getParams();
   const scenario = new Scenario(params);
 
   console.timeEnd("ScenarioBuild");
@@ -146,13 +155,12 @@ const SummaryView = [
             delete vals[year];
             console.log("---Should be deleting this entry...");
           }
-        //   console.log("---YearlyValues", vals);
+          //   console.log("---YearlyValues", vals);
           saveYearlyValues(col, vals);
         }
       });
       setCount(count + 1);
     }
-
   }
 
   function getYearlyValues(k) {
@@ -172,11 +180,59 @@ const SummaryView = [
     localStorage.setItem(k, JSON.stringify(o));
   }
 
+  function calcOptimumSpend() {
+    console.log("--- calcOptimumSpend");
+    console.time("calcOptimumSpend");
+
+    let annualExpenses = "0";
+    const params = getParams();
+    const results = [];
+
+    for (let run = 0; run < 50; run++) {
+      params.annualExpenses = annualExpenses;
+      const scenario = new Scenario(params);
+      const value = scenario.getOptimumSpend(results);
+      console.log('--- when they are the same we are done...',run,annualExpenses,value);
+      if (annualExpenses === String(value)) {
+        console.log('They are the same at run',run, value);
+        break;
+      }
+      
+      annualExpenses = String(value);
+    }
+
+    // results.forEach((r, i) => {
+    //   console.log(i, dollarFormatter(r.annualExpenses), r.percent, dollarFormatter(r.result));
+    // });
+
+    // console.log("   --- final results:", results);
+
+    localStorage.setItem("annualExpenses", annualExpenses);
+
+    console.timeEnd("calcOptimumSpend");
+
+    setCount(count + 1);
+  }
+
   lookAt(view);
 
   return (
     // <div>
     <div className="dash flex flex-wrap w-full bg-white drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] rounded-2xl p-4">
+      <div className="w-full flex flex-wrap">
+        <Generator
+          display={[
+            { name: "age" },
+            { name: "partnerAge" },
+            { name: "totalRegistered" },
+            { name: "totalUnregistered" },
+            { name: "totalTFSA" },
+            { name: "annualExpenses" },
+          ]}
+        />
+        <button onClick={() => setCount(count + 1)}>Calc</button>
+        <button onClick={calcOptimumSpend}>Optimum Spend</button>
+      </div>
       <button onClick={() => setView(GeneralView)}>All</button>
       <button onClick={() => setView(ExpenseView)}>Expense</button>
       <button onClick={() => setView(InvestmentView)}>Investment</button>
